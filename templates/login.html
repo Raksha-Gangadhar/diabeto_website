@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Diabetes Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3a6cf4;
+            --secondary-color: #f0f5ff;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --white: #ffffff;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--light), var(--gray));
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 900px;
+            margin: 20px;
+            background-color: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-hero {
+            flex: 1;
+            background: linear-gradient(45deg, #3a6cf4, #5e85f7);
+            color: var(--white);
+            padding: 40px;
+            display: none;
+        }
+        
+        .login-container {
+            flex: 1;
+            padding: 50px;
+            position: relative;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo i {
+            font-size: 40px;
+            color: var(--primary-color);
+        }
+        
+        h2 {
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--light-text);
+            margin-bottom: 30px;
+        }
+        
+        .form-floating {
+            margin-bottom: 20px;
+        }
+        
+        .form-floating input {
+            border-radius: 0px;
+            border: 1px solid #e1e5eb;
+            padding: 15px;
+            height: 55px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-floating input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(58, 108, 244, 0.25);
+        }
+        
+        .form-floating label {
+            padding: 15px;
+            color: var(--light-text);
+        }
+        
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label {
+            color: var(--primary-color);
+        }
+        
+        .form-check {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .form-check-label {
+            color: var(--light-text);
+            font-size: 14px;
+        }
+        
+        .login-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: #2d5ad9;
+            transform: translateY(-2px);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .error-message {
+            color: var(--danger-color);
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 10px;
+            background-color: rgba(220, 53, 69, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 15px;
+            color: var(--light-text);
+        }
+        
+        .signup-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .login-container > * {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .login-container > *:nth-child(1) { animation-delay: 0.1s; }
+        .login-container > *:nth-child(2) { animation-delay: 0.2s; }
+        .login-container > *:nth-child(3) { animation-delay: 0.3s; }
+        .login-container > *:nth-child(4) { animation-delay: 0.4s; }
+        .login-container > *:nth-child(5) { animation-delay: 0.5s; }
+        
+        /* Responsive design */
+        @media (min-width: 768px) {
+            .login-hero {
+                display: block;
+            }
+            
+            .login-hero-content {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .login-hero h3 {
+                font-size: 24px;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+            
+            .login-hero p {
+                opacity: 0.8;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+            
+            .hero-icon {
+                font-size: 60px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <!-- Left side - Hero section (visible on larger screens) -->
+    <div class="login-hero">
+        <div class="login-hero-content">
+            <div class="hero-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h3>Diabetes Prediction Platform</h3>
+            <p>Welcome to our advanced healthcare platform. Log in to access personalized diabetes risk assessment and comprehensive health insights.</p>
+            <p>Your health journey starts here with reliable predictions, actionable insights, and continuous support.</p>
+        </div>
+    </div>
+    
+    <!-- Right side - Login form -->
+    <div class="login-container">
+        <div class="logo">
+            <i class="fas fa-stethoscope"></i>
+        </div>
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Please enter your credentials to access your account</p>
+        
+        <form method="POST">
+            <!-- No name field on login page since we'll retrieve it from the database -->
+            <div class="form-floating">
+                <input type="email" class="form-control" id="email" name="email" required placeholder="Email Address">
+                <label for="email"><i class="fas fa-envelope me-2"></i>Email Address</label>
+            </div>
+            
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" name="password" required placeholder="Password">
+                <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+            </div>
+            
+            <div class="form-check">
+                <div>
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">
+                        Remember me
+                    </label>
+                </div>
+            </div>
+            
+            {% if error %}
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+            </div>
+            {% endif %}
+            
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </button>
+        </form>
+        
+        <div class="signup-link">
+            <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign up here</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

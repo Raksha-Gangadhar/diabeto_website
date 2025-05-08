@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Diabetes Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c6bed;
+            --primary-hover: #1c54c7;
+            --accent-color: #4cd964;
+            --text-color: #333333;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--light), var(--gray));
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .signup-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin: 2rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .signup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+        }
+        
+        .logo-area {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        h2 {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: var(--dark-gray);
+            margin-bottom: 1.8rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control {
+            border: 1px solid var(--medium-gray);
+            padding: 0.8rem 1rem;
+            border-radius: 0px;
+            transition: all 1s ease;
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(44, 107, 237, 0.15);
+            border-color: var(--primary-color);
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            color: var(--dark-gray);
+            z-index: 10;
+        }
+        
+        .icon-input {
+            padding-left: 2.5rem;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 1rem;
+            color: var(--dark-gray);
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .signup-btn {
+            background: linear-gradient(90deg, var(--primary-color), #4e7df7);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(44, 107, 237, 0.25);
+        }
+        
+        .signup-btn:hover {
+            background: linear-gradient(90deg, var(--primary-hover), #3d6ce6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(44, 107, 237, 0.3);
+        }
+        
+        .signup-btn:active {
+            transform: translateY(0);
+        }
+        
+        .error-message {
+            background-color: #ffeeee;
+            color: #e53935;
+            text-align: center;
+            margin: 1rem 0;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border-left: 4px solid #e53935;
+            font-size: 0.9rem;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+        }
+        
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .login-link a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 576px) {
+            .signup-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="signup-container">
+    <div class="logo-area">
+        <div class="logo-icon">
+            <i class="fas fa-heartbeat"></i>
+        </div>
+        <h2>Create Account</h2>
+        <p class="subtitle">Join the Diabetes Prediction platform</p>
+    </div>
+    
+    <form method="POST">
+        <!-- New name field -->
+        <div class="input-group">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" class="form-control icon-input" id="name" name="name" required placeholder="Full name">
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" class="form-control icon-input" id="email" name="email" required placeholder="Email address">
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" class="form-control icon-input" id="password" name="password" required placeholder="Password">
+            <i class="far fa-eye password-toggle" id="togglePassword"></i>
+        </div>
+        
+        <div class="input-group">
+            <i class="fas fa-check-circle input-icon"></i>
+            <input type="password" class="form-control icon-input" id="confirm_password" name="confirm_password" required placeholder="Confirm password">
+            <i class="far fa-eye password-toggle" id="toggleConfirmPassword"></i>
+        </div>
+        
+        {% if error %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+        </div>
+        {% endif %}
+        
+        <button type="submit" class="signup-btn">
+            <i class="fas fa-user-plus me-2"></i>Create Account
+        </button>
+    </form>
+    
+    <div class="login-link">
+        Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Password toggle functionality
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const icon = this;
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+    
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        const icon = this;
+        
+        if (confirmPasswordInput.type === 'password') {
+            confirmPasswordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            confirmPasswordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+
+    // Form validation for matching passwords
+    const form = document.querySelector('form');
+    const passwordInput = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm_password');
+    
+    form.addEventListener('submit', function(event) {
+        if (passwordInput.value !== confirmPassword.value) {
+            event.preventDefault();
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Passwords do not match';
+            
+            // Remove any existing error messages first
+            const existingError = document.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // Insert before the submit button
+            form.insertBefore(errorDiv, document.querySelector('.signup-btn'));
+        }
+    });
+</script>
+</body>
+</html>

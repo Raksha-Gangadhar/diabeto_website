@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Risk Assessment Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #10b981;
+            --warning: #ef4444;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            line-height: 1.5;
+            transition: background 0.5s ease;
+        }
+
+        /* Dynamic background based on result */
+        body.high-risk {
+            background: linear-gradient(135deg, #fff5f5, #fee2e2);
+        }
+
+        body.medium-risk {
+            background: linear-gradient(135deg, #fff7cc, #fce67d);
+        }
+
+        body.low-risk {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        .result-container {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 1.25rem;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 36rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .result-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            color: var(--text);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .result-message {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-radius: 0.75rem;
+        }
+
+        .high-risk .result-message {
+            color: var(--warning);
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .medium-risk .result-message {
+            color: #f59e0b;
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .low-risk .result-message {
+            color: var(--success);
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .result-description {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .diet-plan-link {
+            margin-top: 2rem;
+        }
+
+        .diet-plan-link a {
+            font-size: 1.2rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .diet-plan-link a:hover {
+            color: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .result-container {
+                padding: 2rem;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .result-container {
+                padding: 1.5rem;
+                border-radius: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .result-message {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body class="{% if risk_level == 'High Risk' %}high-risk{% elif risk_level == 'At Risk' %}medium-risk{% else %}low-risk{% endif %}">
+    <div class="result-container">
+        <h2>Diabetes Risk Assessment Result</h2>
+        
+        <div class="result-message">{{ risk_level }}</div>
+        
+        <p class="result-description">
+            {% if risk_level == 'High Risk' %}
+                Our analysis indicates a high risk of diabetes. Please consult with a healthcare professional for a detailed evaluation and further guidance.
+            {% elif risk_level == 'At Risk' %}
+                You are at moderate risk for diabetes. Consider taking preventive actions such as adjusting your diet and increasing physical activity.
+            {% else %}
+                Your health metrics suggest a low risk of diabetes. Continue maintaining a healthy lifestyle to keep your risk low.
+            {% endif %}
+        </p>
+
+        <!-- Link to the diet plan -->
+        <div class="diet-plan-link">
+            <a href="{{ url_for('diet_plan') }}?risk_level={{ risk_level }}">Click here to view your diet plan</a></p>
+        </div>
+    </div>
+</body>
+</html>

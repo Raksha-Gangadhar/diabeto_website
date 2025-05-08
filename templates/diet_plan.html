@@ -1,0 +1,2586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Personalized Diabetes Diet Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: rgba(37, 99, 235, 0.1);
+            --success: #10b981;
+            --warning: #ef4444;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --bg: #f8fafc;
+            --accent: #10b981;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --dark: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: var(--dark);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #3b82f6;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .logo i {
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--light);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 5rem 0;
+            background: linear-gradient(to bottom, white, var(--bg));
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+
+        .diet-section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            max-width: 700px;
+        }
+
+        .meal-plan {
+            margin-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .day-tabs {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .day-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            background: none;
+            border: none;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .day-tab.active {
+            color: var(--primary);
+        }
+
+        .day-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .day-content {
+            display: none;
+        }
+
+        .day-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .diet-type-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .diet-toggle-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .diet-toggle-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .meal-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .meal-item {
+            padding: 1.5rem;
+            background: var(--primary-light);
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.2s ease;
+        }
+
+        .meal-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .meal-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .meal-description {
+            color: var(--text);
+        }
+
+        .meal-option {
+            margin-bottom: 0.5rem;
+        }
+
+        .option-title {
+            font-weight: 500;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .option-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .portion-guidelines {
+            background-color: var(--primary-light);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .guidelines-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .guidelines-content {
+            color: var(--text);
+        }
+
+        .footer {
+            background-color: white;
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero {
+                padding: 3rem 0;
+            }
+            
+            .subtitle {
+                font-size: 1.25rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .meal-list {
+                grid-template-columns: 1fr;
+            }
+
+            .day-tabs {
+                justify-content: flex-start;
+            }
+
+            .day-tab {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .day-tab {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+        <a href="#" class="logo"><i class="fas fa-heartbeat"></i>Diabeto</a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Your Personalized Indian Diet Plan</h1>
+                <p class="subtitle">Based on your risk level, we've created a weekly Indian diet plan to help you maintain optimal health.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="diet-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Recommended Diet Plan</h2>
+                <p class="section-description">Following a balanced diet is crucial for managing diabetes and maintaining stable blood glucose levels.</p>
+            </div>
+
+            <!-- High Risk Diet Plan -->
+            {% if risk_level == 'High Risk' %}
+            <div class="meal-plan">
+                <h3>High Risk (Diabetes Detected)</h3>
+                
+                <div class="diet-type-toggle">
+                    <button class="diet-toggle-btn active" id="veg-btn">Vegetarian</button>
+                    <button class="diet-toggle-btn" id="non-veg-btn">Non-Vegetarian</button>
+                </div>
+
+                <div class="day-tabs">
+                    <button class="day-tab active" data-day="monday">Monday</button>
+                    <button class="day-tab" data-day="tuesday">Tuesday</button>
+                    <button class="day-tab" data-day="wednesday">Wednesday</button>
+                    <button class="day-tab" data-day="thursday">Thursday</button>
+                    <button class="day-tab" data-day="friday">Friday</button>
+                    <button class="day-tab" data-day="saturday">Saturday</button>
+                    <button class="day-tab" data-day="sunday">Sunday</button>
+                </div>
+                <!-- Vegetarian Diet -->
+<div id="veg-diet">
+    <!-- Monday -->
+    <div class="day-content active" id="monday">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of oats cooked with water and cinnamon (½ cup dry oats)</p>
+                    <p>1 small cup of fenugreek tea (without sugar)</p>
+                    <p>5-6 soaked almonds</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small apple or guava</p>
+                    <p>1 cup buttermilk (without salt)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small jowar roti or bajra roti</p>
+                    <p>1 bowl of green moong dal (½ cup cooked)</p>
+                    <p>1 plate of palak sabji (1 cup)</p>
+                    <p>½ cup curd (without sugar)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup green tea (without sugar)</p>
+                    <p>1 small bowl of roasted chana (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of vegetable daliya khichdi (½ cup)</p>
+                    <p>1 cup cucumber and tomato raita</p>
+                    <p>1 small bowl of sautéed methi (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tuesday -->
+    <div class="day-content" id="tuesday">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>2 small moong dal cheela with mint chutney</p>
+                    <p>1 cup tulsi tea (without sugar)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small orange</p>
+                    <p>1 cup buttermilk with roasted cumin</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small ragi roti</p>
+                    <p>1 bowl of rajma (½ cup, cooked with minimal oil)</p>
+                    <p>1 cup lauki sabji</p>
+                    <p>1 small bowl of cucumber raita (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup lemon water with basil seeds</p>
+                    <p>1 small bowl of sprouts salad (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of brown rice (⅓ cup)</p>
+                    <p>1 cup curry leaf and vegetable sambhar</p>
+                    <p>1 small portion of stir-fried drumstick vegetable (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wednesday -->
+    <div class="day-content" id="wednesday">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of vegetable upma (½ cup)</p>
+                    <p>1 cup mint and coriander tea</p>
+                    <p>2 walnuts</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small pear or jamun (when in season)</p>
+                    <p>1 small cup of yogurt with flaxseeds (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small multigrain roti</p>
+                    <p>1 bowl of toor dal (½ cup)</p>
+                    <p>1 cup bhindi sabji (cooked with minimal oil)</p>
+                    <p>½ cup salad (cucumber, carrots, radish)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup cinnamon tea (without sugar)</p>
+                    <p>1 small bowl of roasted makhana (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of barley khichdi (½ cup)</p>
+                    <p>1 cup bottle gourd curry</p>
+                    <p>1 small bowl of beet greens stir-fry (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thursday -->
+    <div class="day-content" id="thursday">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of vegetable poha with peanuts (½ cup)</p>
+                    <p>1 cup ajwain and ginger tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of mixed berries (when available) or 1 small guava</p>
+                    <p>1 cup buttermilk with curry leaves</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of brown rice (⅓ cup)</p>
+                    <p>1 bowl of spinach and moong dal (½ cup)</p>
+                    <p>1 cup cauliflower and peas sabji</p>
+                    <p>1 small bowl of cucumber and mint raita (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup tulsi tea (without sugar)</p>
+                    <p>1 small bowl of roasted chana and peanuts (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small jowar roti or bajra roti</p>
+                    <p>1 cup lobia curry (cooked with minimal oil)</p>
+                    <p>1 small bowl of carrot and beans poriyal (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friday -->
+    <div class="day-content" id="friday">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of ragi porridge (½ cup)</p>
+                    <p>1 cup cumin and coriander tea</p>
+                    <p>5-6 soaked almonds</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small apple</p>
+                    <p>1 cup coconut water</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small multigrain roti</p>
+                    <p>1 bowl of masoor dal (½ cup)</p>
+                    <p>1 cup cluster beans sabji</p>
+                    <p>½ cup salad (cucumber, radish, onion)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup green tea with mint (without sugar)</p>
+                    <p>1 small bowl of roasted khakhra (2 pieces)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of quinoa pulao (½ cup)</p>
+                    <p>1 cup tomato and bottle gourd curry</p>
+                    <p>1 small bowl of stir-fried cabbage with peas (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saturday -->
+    <div class="day-content" id="saturday">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>2 small idli with sambar (2 small idlis)</p>
+                    <p>1 cup fenugreek tea (without sugar)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of papaya (½ cup)</p>
+                    <p>1 cup buttermilk with mint</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small ragi roti</p>
+                    <p>1 bowl of chana dal (½ cup)</p>
+                    <p>1 cup ridge gourd sabji</p>
+                    <p>1 small bowl of cucumber raita (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup lemon and basil tea (without sugar)</p>
+                    <p>1 small bowl of sprouts salad (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of oats khichdi (½ cup)</p>
+                    <p>1 cup mixed vegetable curry with minimal oil</p>
+                    <p>1 small bowl of ivy gourd stir-fry (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sunday -->
+    <div class="day-content" id="sunday">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small portion of besan chilla with mint chutney (2 small chillas)</p>
+                    <p>1 cup cinnamon tea (without sugar)</p>
+                    <p>2 walnuts</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of mixed seasonal fruit (½ cup)</p>
+                    <p>1 cup buttermilk with roasted cumin</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small multigrain roti or jowar roti</p>
+                    <p>1 bowl of mixed dal (½ cup)</p>
+                    <p>1 cup brinjal sabji</p>
+                    <p>½ cup salad (cucumber, carrot, tomato)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup tulsi tea (without sugar)</p>
+                    <p>1 small bowl of roasted makhana (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of broken wheat upma (½ cup)</p>
+                    <p>1 cup vegetable and lentil soup</p>
+                    <p>1 small bowl of fenugreek leaves stir-fry (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Non-Vegetarian Diet -->
+<div id="non-veg-diet" style="display: none;">
+    <!-- Monday -->
+    <div class="day-content active" id="monday-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of oats cooked with water and cinnamon (½ cup dry oats)</p>
+                    <p>1 small cup of fenugreek tea (without sugar)</p>
+                    <p>5-6 soaked almonds</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small apple or guava</p>
+                    <p>1 cup buttermilk (without salt)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small jowar roti or bajra roti</p>
+                    <p>1 bowl of green moong dal (½ cup cooked)</p>
+                    <p>1 small piece grilled fish (50-60g) with lemon and herbs</p>
+                    <p>1 cup cucumber and tomato salad</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup green tea (without sugar)</p>
+                    <p>1 boiled egg white or 1 small bowl of roasted chana (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of vegetable daliya khichdi (½ cup)</p>
+                    <p>1 cup cucumber and tomato raita</p>
+                    <p>1 small bowl of sautéed methi (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tuesday -->
+    <div class="day-content" id="tuesday-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>2 egg whites omelet with vegetables</p>
+                    <p>1 cup tulsi tea (without sugar)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small orange</p>
+                    <p>1 cup buttermilk with roasted cumin</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small ragi roti</p>
+                    <p>1 bowl of grilled chicken curry (50-60g chicken, minimal oil)</p>
+                    <p>1 cup lauki sabji</p>
+                    <p>1 small bowl of cucumber raita (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup lemon water with basil seeds</p>
+                    <p>1 small bowl of sprouts salad (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of brown rice (⅓ cup)</p>
+                    <p>1 cup curry leaf and vegetable sambhar</p>
+                    <p>1 small portion of stir-fried drumstick vegetable (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wednesday -->
+    <div class="day-content" id="wednesday-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of vegetable upma (½ cup)</p>
+                    <p>1 cup mint and coriander tea</p>
+                    <p>2 walnuts</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small pear or jamun (when in season)</p>
+                    <p>1 small cup of yogurt with flaxseeds (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small multigrain roti</p>
+                    <p>1 bowl of steamed fish curry (50-60g fish, minimal oil)</p>
+                    <p>1 cup bhindi sabji (cooked with minimal oil)</p>
+                    <p>½ cup salad (cucumber, carrots, radish)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup cinnamon tea (without sugar)</p>
+                    <p>1 boiled egg or 1 small bowl of roasted makhana (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of barley khichdi (½ cup)</p>
+                    <p>1 cup bottle gourd curry</p>
+                    <p>1 small bowl of beet greens stir-fry (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thursday -->
+    <div class="day-content" id="thursday-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of vegetable poha with peanuts (½ cup)</p>
+                    <p>1 cup ajwain and ginger tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of mixed berries (when available) or 1 small guava</p>
+                    <p>1 cup buttermilk with curry leaves</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of brown rice (⅓ cup)</p>
+                    <p>1 bowl of tandoori chicken (60g, without skin)</p>
+                    <p>1 cup cauliflower and peas sabji</p>
+                    <p>1 small bowl of cucumber and mint raita (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup tulsi tea (without sugar)</p>
+                    <p>1 egg white omelette with vegetables</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small jowar roti or bajra roti</p>
+                    <p>1 cup lobia curry (cooked with minimal oil)</p>
+                    <p>1 small bowl of carrot and beans poriyal (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friday -->
+    <div class="day-content" id="friday-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of ragi porridge (½ cup)</p>
+                    <p>1 cup cumin and coriander tea</p>
+                    <p>5-6 soaked almonds</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small apple</p>
+                    <p>1 cup coconut water</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small multigrain roti</p>
+                    <p>1 bowl of fish moilee (60g fish)</p>
+                    <p>1 cup cluster beans sabji</p>
+                    <p>½ cup salad (cucumber, radish, onion)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup green tea with mint (without sugar)</p>
+                    <p>1 boiled egg white or 1 small bowl of roasted khakhra (2 pieces)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of quinoa pulao (½ cup)</p>
+                    <p>1 cup tomato and bottle gourd curry</p>
+                    <p>1 small bowl of stir-fried cabbage with peas (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saturday -->
+    <div class="day-content" id="saturday-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>2 small idli with sambar (2 small idlis)</p>
+                    <p>1 cup fenugreek tea (without sugar)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of papaya (½ cup)</p>
+                    <p>1 cup buttermilk with mint</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small ragi roti</p>
+                    <p>1 bowl of chicken curry (60g chicken, minimal oil)</p>
+                    <p>1 cup ridge gourd sabji</p>
+                    <p>1 small bowl of cucumber raita (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup lemon and basil tea (without sugar)</p>
+                    <p>1 small bowl of sprouts salad (½ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of oats khichdi (½ cup)</p>
+                    <p>1 cup mixed vegetable curry with minimal oil</p>
+                    <p>1 small bowl of ivy gourd stir-fry (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sunday -->
+    <div class="day-content" id="sunday-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small egg white masala (2 egg whites)</p>
+                    <p>1 cup cinnamon tea (without sugar)</p>
+                    <p>2 walnuts</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of mixed seasonal fruit (½ cup)</p>
+                    <p>1 cup buttermilk with roasted cumin</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 small multigrain roti or jowar roti</p>
+                    <p>1 bowl of fish curry (60g fish, minimal oil)</p>
+                    <p>1 cup brinjal sabji</p>
+                    <p>½ cup salad (cucumber, carrot, tomato)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup tulsi tea (without sugar)</p>
+                    <p>1 boiled egg white or 1 small bowl of roasted makhana (¼ cup)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of broken wheat upma (½ cup)</p>
+                    <p>1 cup vegetable and lentil soup</p>
+                    <p>1 small bowl of fenugreek leaves stir-fry (½ cup)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="portion-guidelines">
+    <div class="guidelines-title">Portion Guidelines and Recommendations</div>
+    <div class="guidelines-content">
+        <p><strong>Grains:</strong> Limit to ½ cup cooked or 1 small roti/idli per meal.</p>
+        <p><strong>Proteins:</strong> 60g of lean protein (fish/chicken) or ½ cup legumes per meal.</p>
+        <p><strong>Vegetables:</strong> Fill half your plate with non-starchy vegetables.</p>
+        <p><strong>Fruits:</strong> Limit to 1 small fruit or ½ cup chopped fruit per serving.</p>
+        <p><strong>Fats:</strong> Use minimal oil (1 tsp) for cooking.</p>
+        <p><strong>Hydration:</strong> Drink 8-10 glasses of water daily. Include herbal teas and buttermilk.</p>
+        <p><strong>Timing:</strong> Eat at regular intervals; don't skip meals. Last meal should be 2-3 hours before bedtime.</p>
+    </div>
+</div>
+
+{% elif risk_level == 'At Risk' %}
+<div class="meal-plan">
+    <h3>Moderate Risk (At Risk)</h3>
+    
+    <div class="diet-type-toggle">
+        <button class="diet-toggle-btn active" id="veg-btn-moderate">Vegetarian</button>
+        <button class="diet-toggle-btn" id="non-veg-btn-moderate">Non-Vegetarian</button>
+    </div>
+
+    <div class="day-tabs">
+        <button class="day-tab active" data-day="monday-moderate">Monday</button>
+        <button class="day-tab" data-day="tuesday-moderate">Tuesday</button>
+        <button class="day-tab" data-day="wednesday-moderate">Wednesday</button>
+        <button class="day-tab" data-day="thursday-moderate">Thursday</button>
+        <button class="day-tab" data-day="friday-moderate">Friday</button>
+        <button class="day-tab" data-day="saturday-moderate">Saturday</button>
+        <button class="day-tab" data-day="sunday-moderate">Sunday</button>
+    </div>
+
+    <!-- Vegetarian Diet -->
+    <div id="veg-diet-moderate">
+        <!-- Monday -->
+        <div class="day-content active" id="monday-moderate">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl of vegetable poha with minimal oil (¾ cup)</p>
+                        <p>1 cup green tea (without sugar)</p>
+                        <p>5 almonds</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 medium-sized fruit (apple/guava/orange)</p>
+                        <p>1 cup buttermilk (made with low-fat curd)</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 small multigrain rotis or 1 cup brown rice</p>
+                        <p>1 cup moong dal</p>
+                        <p>1 cup palak sabzi (spinach curry)</p>
+                        <p>1 bowl of cucumber and tomato salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 cup sprouts chaat with lemon and spices</p>
+                        <p>1 cup masala chai (with jaggery instead of sugar)</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl mixed vegetable daliya (broken wheat) khichdi (¾ cup)</p>
+                        <p>1 cup low-fat curd</p>
+                        <p>1 cup sautéed vegetables</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tuesday -->
+        <div class="day-content" id="tuesday-moderate">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 small besan chilla with mint chutney</p>
+                        <p>1 cup fenugreek tea</p>
+                        <p>1 small bowl of low-fat curd</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 cup mixed fruit salad (with seasonal fruits)</p>
+                        <p>1 cup buttermilk</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 small jowar rotis</p>
+                        <p>1 cup rajma curry (kidney beans)</p>
+                        <p>1 cup bhindi fry (okra)</p>
+                        <p>1 bowl of salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 medium-sized fruit</p>
+                        <p>1 cup roasted chana</p>
+                        <p>1 cup green tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 cup vegetable pulao with quinoa or brown rice</p>
+                        <p>1 cup kadhi (yogurt curry)</p>
+                        <p>1 cup tinda sabzi (apple gourd)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wednesday -->
+        <div class="day-content" id="wednesday-moderate">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 small idlis with sambar</p>
+                        <p>1 cup coconut chutney (small portion)</p>
+                        <p>1 cup tulsi tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 cup muskmelon or papaya</p>
+                        <p>5 soaked almonds</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 small ragi rotis</p>
+                        <p>1 cup toor dal</p>
+                        <p>1 cup cabbage sabzi</p>
+                        <p>1 bowl of sprout salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 small bowl of roasted makhana</p>
+                        <p>1 cup herbal tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 small multigrain rotis</p>
+                        <p>1 cup paneer bhurji (less oil)</p>
+                        <p>1 cup mixed vegetable curry</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thursday -->
+        <div class="day-content" id="thursday-moderate">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl of vegetable upma</p>
+                        <p>1 cup coconut chutney (small portion)</p>
+                        <p>1 cup green tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 medium-sized fruit</p>
+                        <p>1 cup roasted chana</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>1 cup brown rice</p>
+                        <p>1 cup chana masala</p>
+                        <p>1 cup baingan bharta (roasted eggplant)</p>
+                        <p>1 bowl of cucumber raita</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 small bowl of bhel puri (with less oil and tamarind chutney)</p>
+                        <p>1 cup masala tea (with jaggery)</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 small bajra rotis</p>
+                        <p>1 cup palak paneer (with less oil)</p>
+                        <p>1 cup mixed vegetable salad</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friday -->
+        <div class="day-content" id="friday-moderate">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl of vegetable daliya</p>
+                        <p>1 cup low-fat curd</p>
+                        <p>1 cup fenugreek tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 medium-sized fruit</p>
+                        <p>1 cup buttermilk</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 small multigrain rotis</p>
+                        <p>1 cup masoor dal</p>
+                        <p>1 cup lauki sabzi (bottle gourd)</p>
+                        <p>1 bowl of cucumber salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 small bowl of steamed corn</p>
+                        <p>1 cup herbal tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 cup vegetable khichdi</p>
+                        <p>1 cup kaddu sabzi (pumpkin)</p>
+                        <p>1 cup low-fat curd</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saturday -->
+        <div class="day-content" id="saturday-moderate">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 small uttapams with tomato and onion</p>
+                        <p>1 cup coconut chutney (small portion)</p>
+                        <p>1 cup herbal tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 cup watermelon or pineapple</p>
+                        <p>5 soaked almonds</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 small jowar rotis</p>
+                        <p>1 cup chole (chickpea curry)</p>
+                        <p>1 cup shimla mirch aloo (capsicum potato curry)</p>
+                        <p>1 bowl of cucumber and tomato salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 small bowl of sprouts chaat</p>
+                        <p>1 cup green tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 cup multigrain vegetable khichdi</p>
+                        <p>1 cup karela sabzi (bitter gourd)</p>
+                        <p>1 bowl of cucumber raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sunday -->
+        <div class="day-content" id="sunday-moderate">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 small paneer parathas (with minimal oil)</p>
+                        <p>1 cup low-fat curd</p>
+                        <p>1 cup tulsi tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 medium-sized fruit</p>
+                        <p>1 cup buttermilk</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>1 cup brown rice</p>
+                        <p>1 cup sambar</p>
+                        <p>1 cup avial (mixed vegetable curry)</p>
+                        <p>1 bowl of cucumber raita</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 small bowl of dhokla</p>
+                        <p>1 cup green chutney</p>
+                        <p>1 cup herbal tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 small multigrain rotis</p>
+                        <p>1 cup matar paneer (green peas and cottage cheese curry)</p>
+                        <p>1 cup sautéed vegetables</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Non-Vegetarian Diet -->
+<div id="non-veg-diet-moderate" style="display: none;">
+    <!-- Monday -->
+    <div class="day-content active" id="monday-moderate-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>2 egg whites omelette with vegetables</p>
+                    <p>1 slice multigrain bread</p>
+                    <p>1 cup green tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 medium-sized fruit (apple/guava/orange)</p>
+                    <p>1 cup buttermilk (made with low-fat curd)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>2 small multigrain rotis</p>
+                    <p>1 cup fish curry (80g fish)</p>
+                    <p>1 cup palak sabzi (spinach curry)</p>
+                    <p>1 bowl of cucumber and tomato salad</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup sprouts chaat with lemon and spices</p>
+                    <p>1 cup masala chai (with jaggery instead of sugar)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 bowl mixed vegetable daliya (broken wheat) khichdi (¾ cup)</p>
+                    <p>1 cup low-fat curd</p>
+                    <p>1 cup sautéed vegetables</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tuesday -->
+    <div class="day-content" id="tuesday-moderate-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 bowl of vegetable poha</p>
+                    <p>1 boiled egg</p>
+                    <p>1 cup fenugreek tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 cup mixed fruit salad (with seasonal fruits)</p>
+                    <p>1 cup buttermilk</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>2 small jowar rotis</p>
+                    <p>1 cup chicken curry (80g chicken)</p>
+                    <p>1 cup bhindi fry (okra)</p>
+                    <p>1 bowl of salad</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 medium-sized fruit</p>
+                    <p>1 cup roasted chana</p>
+                    <p>1 cup green tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup vegetable pulao with quinoa or brown rice</p>
+                    <p>1 cup kadhi (yogurt curry)</p>
+                    <p>1 cup tinda sabzi (apple gourd)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wednesday -->
+    <div class="day-content" id="wednesday-moderate-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>2 small idlis with sambar</p>
+                    <p>1 cup coconut chutney (small portion)</p>
+                    <p>1 cup tulsi tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 cup muskmelon or papaya</p>
+                    <p>5 soaked almonds</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>2 small ragi rotis</p>
+                    <p>1 cup fish masala (80g fish)</p>
+                    <p>1 cup cabbage sabzi</p>
+                    <p>1 bowl of sprout salad</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 boiled egg</p>
+                    <p>1 cup herbal tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>2 small multigrain rotis</p>
+                    <p>1 cup dal fry</p>
+                    <p>1 cup mixed vegetable curry</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thursday -->
+    <div class="day-content" id="thursday-moderate-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 bowl of vegetable upma</p>
+                    <p>1 boiled egg</p>
+                    <p>1 cup green tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 medium-sized fruit</p>
+                    <p>1 cup roasted chana</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup brown rice</p>
+                    <p>1 cup chicken curry (80g chicken)</p>
+                    <p>1 cup baingan bharta (roasted eggplant)</p>
+                    <p>1 bowl of cucumber raita</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of bhel puri (with less oil and tamarind chutney)</p>
+                    <p>1 cup masala tea (with jaggery)</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>2 small bajra rotis</p>
+                    <p>1 cup grilled fish (80g) with herbs</p>
+                    <p>1 cup mixed vegetable salad</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friday -->
+    <div class="day-content" id="friday-moderate-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>2 egg whites masala</p>
+                    <p>1 slice multigrain bread</p>
+                    <p>1 cup fenugreek tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 medium-sized fruit</p>
+                    <p>1 cup buttermilk</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>2 small multigrain rotis</p>
+                    <p>1 cup fish curry (80g fish)</p>
+                    <p>1 cup lauki sabzi (bottle gourd)</p>
+                    <p>1 bowl of cucumber salad</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of steamed corn</p>
+                    <p>1 cup herbal tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup vegetable khichdi</p>
+                    <p>1 cup kaddu sabzi (pumpkin)</p>
+                    <p>1 cup low-fat curd</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saturday -->
+    <div class="day-content" id="saturday-moderate-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>2 small uttapams with tomato and onion</p>
+                    <p>1 cup coconut chutney (small portion)</p>
+                    <p>1 cup herbal tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 cup watermelon or pineapple</p>
+                    <p>5 soaked almonds</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>2 small jowar rotis</p>
+                    <p>1 cup chicken curry (80g chicken)</p>
+                    <p>1 cup shimla mirch aloo (capsicum potato curry)</p>
+                    <p>1 bowl of cucumber and tomato salad</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 boiled egg</p>
+                    <p>1 cup green tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup multigrain vegetable khichdi</p>
+                    <p>1 cup karela sabzi (bitter gourd)</p>
+                    <p>1 bowl of cucumber raita</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sunday -->
+    <div class="day-content" id="sunday-moderate-nonveg">
+        <div class="meal-list">
+            <div class="meal-item">
+                <div class="meal-title">Breakfast (8:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 bowl of vegetable poha</p>
+                    <p>1 boiled egg</p>
+                    <p>1 cup tulsi tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                <div class="meal-description">
+                    <p>1 medium-sized fruit</p>
+                    <p>1 cup buttermilk</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Lunch (1:00 PM)</div>
+                <div class="meal-description">
+                    <p>1 cup brown rice</p>
+                    <p>1 cup fish curry (80g fish)</p>
+                    <p>1 cup avial (mixed vegetable curry)</p>
+                    <p>1 bowl of cucumber raita</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Evening Snack (4:30 PM)</div>
+                <div class="meal-description">
+                    <p>1 small bowl of dhokla</p>
+                    <p>1 cup green chutney</p>
+                    <p>1 cup herbal tea</p>
+                </div>
+            </div>
+            <div class="meal-item">
+                <div class="meal-title">Dinner (7:30 PM)</div>
+                <div class="meal-description">
+                    <p>2 small multigrain rotis</p>
+                    <p>1 cup chicken tikka (80g, grilled)</p>
+                    <p>1 cup sautéed vegetables</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="portion-guidelines">
+    <div class="guidelines-title">Portion Guidelines and Recommendations</div>
+    <div class="guidelines-content">
+        <p><strong>Grains:</strong> 2 small rotis or ⅔ cup of cooked rice/daliya per meal.</p>
+        <p><strong>Proteins:</strong> 80g of lean protein (fish/chicken) or ¾ cup legumes per meal.</p>
+        <p><strong>Vegetables:</strong> 1-2 cups of vegetables per meal, focus on non-starchy options.</p>
+        <p><strong>Fruits:</strong> 1 medium fruit or ¾ cup chopped fruit per serving.</p>
+        <p><strong>Fats:</strong> 2-3 tsp oil per day for cooking.</p>
+        <p><strong>Hydration:</strong> Drink 8-10 glasses of water daily, include herbal teas.</p>
+        <p><strong>Exercise:</strong> 30 minutes of moderate physical activity, 5 days a week.</p>
+        <p><strong>Timing:</strong> Eat at regular intervals; don't skip meals. Last meal should be 2-3 hours before bedtime.</p>
+    </div>
+</div>
+
+{% else %}
+<div class="meal-plan">
+    <h3>Low Risk (No Risk)</h3>
+    
+    <div class="diet-type-toggle">
+        <button class="diet-toggle-btn active" id="veg-btn-low">Vegetarian</button>
+        <button class="diet-toggle-btn" id="non-veg-btn-low">Non-Vegetarian</button>
+    </div>
+
+    <div class="day-tabs">
+        <button class="day-tab active" data-day="monday-low">Monday</button>
+        <button class="day-tab" data-day="tuesday-low">Tuesday</button>
+        <button class="day-tab" data-day="wednesday-low">Wednesday</button>
+        <button class="day-tab" data-day="thursday-low">Thursday</button>
+        <button class="day-tab" data-day="friday-low">Friday</button>
+        <button class="day-tab" data-day="saturday-low">Saturday</button>
+        <button class="day-tab" data-day="sunday-low">Sunday</button>
+    </div>
+
+    <!-- Vegetarian Diet -->
+    <div id="veg-diet-low">
+        <!-- Monday -->
+        <div class="day-content active" id="monday-low">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 stuffed parathas with minimal oil</p>
+                        <p>1 cup curd</p>
+                        <p>1 cup mint tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 cup mixed fruit chaat with chat masala</p>
+                        <p>1 glass coconut water</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup rajma curry</p>
+                        <p>1 cup jeera rice</p>
+                        <p>1 cup tinda vegetable</p>
+                        <p>1 bowl of salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 samosas with green chutney</p>
+                        <p>1 cup masala chai</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup paneer butter masala</p>
+                        <p>1 cup vegetable pulao</p>
+                        <p>1 bowl of cucumber raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tuesday -->
+        <div class="day-content" id="tuesday-low">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl vegetable poha</p>
+                        <p>1 cup sprouts salad</p>
+                        <p>1 glass buttermilk</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl roasted makhana</p>
+                        <p>1 apple</p>
+                        <p>1 cup green tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>3 chapatis</p>
+                        <p>1 cup chana masala</p>
+                        <p>1 cup steamed rice</p>
+                        <p>1 cup bhindi sabzi</p>
+                        <p>1 bowl mixed vegetable salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate dhokla with green chutney</p>
+                        <p>1 cup lemon tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup mixed vegetable curry</p>
+                        <p>1 cup dal tadka</p>
+                        <p>1 bowl boondi raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wednesday -->
+        <div class="day-content" id="wednesday-low">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>3 idlis with sambar</p>
+                        <p>1 cup coconut chutney</p>
+                        <p>1 cup filter coffee</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl mixed nuts (almonds, walnuts, raisins)</p>
+                        <p>1 orange</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup palak paneer</p>
+                        <p>1 cup lemon rice</p>
+                        <p>1 cup lauki sabzi</p>
+                        <p>1 bowl tomato-cucumber salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate vegetable upma</p>
+                        <p>1 cup ginger tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup matar mushroom</p>
+                        <p>1 cup jeera rice</p>
+                        <p>1 bowl spinach raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thursday -->
+        <div class="day-content" id="thursday-low">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 plain paratha with minimal oil</p>
+                        <p>1 cup vegetable sabzi</p>
+                        <p>1 cup lassi</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl sprouts chaat</p>
+                        <p>1 pear</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>3 chapatis</p>
+                        <p>1 cup dal fry</p>
+                        <p>1 cup pulao</p>
+                        <p>1 cup aloo gobi</p>
+                        <p>1 bowl onion-cucumber salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 vegetable cutlets with mint chutney</p>
+                        <p>1 cup cardamom tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup kadai paneer</p>
+                        <p>1 cup steamed rice</p>
+                        <p>1 bowl mixed vegetable raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friday -->
+        <div class="day-content" id="friday-low">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl vegetable upma</p>
+                        <p>1 cup coconut chutney</p>
+                        <p>1 glass fresh orange juice</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl roasted chana</p>
+                        <p>1 banana</p>
+                        <p>1 cup mint tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup rajma curry</p>
+                        <p>1 cup vegetable biryani</p>
+                        <p>1 cup pumpkin sabzi</p>
+                        <p>1 bowl carrot and cucumber salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate pani puri</p>
+                        <p>1 cup herbal tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup mushroom masala</p>
+                        <p>1 cup steamed rice</p>
+                        <p>1 bowl lauki raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saturday -->
+        <div class="day-content" id="saturday-low">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 besan chilla</p>
+                        <p>1 cup paneer bhurji</p>
+                        <p>1 cup mint-coriander chutney</p>
+                        <p>1 cup masala chai</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl mixed fruit salad</p>
+                        <p>1 glass buttermilk</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>3 chapatis</p>
+                        <p>1 cup chole curry</p>
+                        <p>1 cup steamed rice</p>
+                        <p>1 cup cabbage poriyal</p>
+                        <p>1 bowl sprouts salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate idli fry with coconut chutney</p>
+                        <p>1 cup lemon tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup malai kofta</p>
+                        <p>1 cup jeera rice</p>
+                        <p>1 bowl mint raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sunday -->
+        <div class="day-content" id="sunday-low">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 pesarattu dosa</p>
+                        <p>1 cup upma</p>
+                        <p>1 cup coconut chutney</p>
+                        <p>1 cup filter coffee</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl dry fruits mix</p>
+                        <p>1 apple</p>
+                        <p>1 cup green tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup paneer tikka masala</p>
+                        <p>1 cup peas pulao</p>
+                        <p>1 cup baingan bharta</p>
+                        <p>1 bowl cucumber-tomato salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate bhel puri</p>
+                        <p>1 cup masala chai</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup dal makhani</p>
+                        <p>1 cup vegetable pulao</p>
+                        <p>1 bowl cucumber raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Non-Vegetarian Diet -->
+    <div id="non-veg-diet-low" style="display: none;">
+        <!-- Monday -->
+        <div class="day-content active" id="monday-low-nonveg">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 egg parathas with minimal oil</p>
+                        <p>1 cup curd</p>
+                        <p>1 cup mint tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 cup mixed fruit chaat with chat masala</p>
+                        <p>1 glass coconut water</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup chicken curry</p>
+                        <p>1 cup jeera rice</p>
+                        <p>1 cup tinda vegetable</p>
+                        <p>1 bowl of salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chicken samosas with green chutney</p>
+                        <p>1 cup masala chai</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup fish curry</p>
+                        <p>1 cup vegetable pulao</p>
+                        <p>1 bowl of cucumber raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tuesday -->
+        <div class="day-content" id="tuesday-low-nonveg">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl vegetable poha with shredded chicken</p>
+                        <p>1 cup sprouts salad</p>
+                        <p>1 glass buttermilk</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl roasted makhana</p>
+                        <p>1 apple</p>
+                        <p>1 cup green tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>3 chapatis</p>
+                        <p>1 cup egg curry</p>
+                        <p>1 cup steamed rice</p>
+                        <p>1 cup bhindi sabzi</p>
+                        <p>1 bowl mixed vegetable salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate keema dhokla with green chutney</p>
+                        <p>1 cup lemon tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup chicken tikka masala</p>
+                        <p>1 cup dal tadka</p>
+                        <p>1 bowl boondi raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wednesday -->
+        <div class="day-content" id="wednesday-low-nonveg">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>3 idlis with chicken keema</p>
+                        <p>1 cup coconut chutney</p>
+                        <p>1 cup filter coffee</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl mixed nuts (almonds, walnuts, raisins)</p>
+                        <p>1 orange</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup mutton curry</p>
+                        <p>1 cup lemon rice</p>
+                        <p>1 cup lauki sabzi</p>
+                        <p>1 bowl tomato-cucumber salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate egg upma</p>
+                        <p>1 cup ginger tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup fish masala</p>
+                        <p>1 cup jeera rice</p>
+                        <p>1 bowl spinach raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thursday -->
+        <div class="day-content" id="thursday-low-nonveg">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 egg bhurji with 2 plain paratha</p>
+                        <p>1 cup vegetable sabzi</p>
+                        <p>1 cup lassi</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl sprouts chaat</p>
+                        <p>1 pear</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>3 chapatis</p>
+                        <p>1 cup chicken do pyaza</p>
+                        <p>1 cup pulao</p>
+                        <p>1 cup aloo gobi</p>
+                        <p>1 bowl onion-cucumber salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chicken cutlets with mint chutney</p>
+                        <p>1 cup cardamom tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup fish tikka masala</p>
+                        <p>1 cup steamed rice</p>
+                        <p>1 bowl mixed vegetable raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friday -->
+        <div class="day-content" id="friday-low-nonveg">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl chicken upma</p>
+                        <p>1 cup coconut chutney</p>
+                        <p>1 glass fresh orange juice</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl roasted chana</p>
+                        <p>1 banana</p>
+                        <p>1 cup mint tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup egg curry</p>
+                        <p>1 cup chicken biryani</p>
+                        <p>1 cup pumpkin sabzi</p>
+                        <p>1 bowl carrot and cucumber salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate keema pani puri</p>
+                        <p>1 cup herbal tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup mutton keema</p>
+                        <p>1 cup steamed rice</p>
+                        <p>1 bowl lauki raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saturday -->
+        <div class="day-content" id="saturday-low-nonveg">
+            <div class="meal-list">
+                <div class="meal-item">
+                    <div class="meal-title">Breakfast (8:00 AM)</div>
+                    <div class="meal-description">
+                        <p>2 besan chilla with chicken filling</p>
+                        <p>1 cup egg bhurji</p>
+                        <p>1 cup mint-coriander chutney</p>
+                        <p>1 cup masala chai</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+                    <div class="meal-description">
+                        <p>1 bowl mixed fruit salad</p>
+                        <p>1 glass buttermilk</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Lunch (1:00 PM)</div>
+                    <div class="meal-description">
+                        <p>3 chapatis</p>
+                        <p>1 cup fish curry</p>
+                        <p>1 cup steamed rice</p>
+                        <p>1 cup cabbage poriyal</p>
+                        <p>1 bowl sprouts salad</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Evening Snack (4:30 PM)</div>
+                    <div class="meal-description">
+                        <p>1 plate egg idli fry with coconut chutney</p>
+                        <p>1 cup lemon tea</p>
+                    </div>
+                </div>
+                <div class="meal-item">
+                    <div class="meal-title">Dinner (7:30 PM)</div>
+                    <div class="meal-description">
+                        <p>2 chapatis</p>
+                        <p>1 cup chicken kofta curry</p>
+                        <p>1 cup jeera rice</p>
+                        <p>1 bowl mint raita</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+<div class="day-content" id="sunday-low-nonveg">
+  <div class="meal-list">
+    <div class="meal-item">
+      <div class="meal-title">Breakfast (8:00 AM)</div>
+      <div class="meal-description">
+        <p>2 egg dosa</p>
+        <p>1 cup chicken upma</p>
+        <p>1 cup coconut chutney</p>
+        <p>1 cup filter coffee</p>
+      </div>
+    </div>
+    <div class="meal-item">
+      <div class="meal-title">Mid-morning Snack (11:00 AM)</div>
+      <div class="meal-description">
+        <p>1 apple</p>
+        <p>5 almonds</p>
+        <p>1 cup green tea</p>
+      </div>
+    </div>
+    <div class="meal-item">
+      <div class="meal-title">Lunch (1:30 PM)</div>
+      <div class="meal-description">
+        <p>1 cup brown rice</p>
+        <p>1 cup chicken curry</p>
+        <p>1 cup cucumber raita</p>
+        <p>1 small bowl vegetable salad</p>
+      </div>
+    </div>
+    <div class="meal-item">
+      <div class="meal-title">Evening Snack (4:30 PM)</div>
+      <div class="meal-description">
+        <p>1 egg sandwich</p>
+        <p>1 cup masala chai</p>
+      </div>
+    </div>
+    <div class="meal-item">
+      <div class="meal-title">Dinner (8:00 PM)</div>
+      <div class="meal-description">
+        <p>2 multigrain rotis</p>
+        <p>100g grilled fish</p>
+        <p>1 cup mixed vegetable curry</p>
+        <p>1 small bowl buttermilk</p>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+                <div class="portion-guidelines">
+                    <div class="guidelines-title">General Dietary Guidelines</div>
+                    <div class="guidelines-content">
+                        <p>While you currently have a low risk for diabetes, maintaining a balanced diet is still important for overall health. Here are some general guidelines:</p>
+                        <p><strong>Portion control:</strong> Be mindful of portion sizes and avoid overeating.</p>
+                        <p><strong>Balanced meals:</strong> Include a variety of food groups in your meals.</p>
+                        <p><strong>Regular meals:</strong> Try to maintain a consistent meal schedule.</p>
+                        <p><strong>Hydration:</strong> Drink at least 8-10 glasses of water daily.</p>
+                        <p><strong>Activity:</strong> Aim for at least 30 minutes of physical activity most days of the week.</p>
+                        <p><strong>Preventive check-ups:</strong> Consider annual health check-ups to monitor blood sugar levels.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">Keep up the healthy habits and stay active to maintain a healthy lifestyle. Always consult a healthcare provider for personalized advice!</p>
+                <a href="{{ url_for('profile') }}">Return to Profile</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Diet type toggle
+        const vegBtn = document.getElementById('veg-btn');
+        const nonVegBtn = document.getElementById('non-veg-btn');
+        const vegDiet = document.getElementById('veg-diet');
+        const nonVegDiet = document.getElementById('non-veg-diet');
+
+        if (vegBtn && nonVegBtn && vegDiet && nonVegDiet) {
+            vegBtn.addEventListener('click', function() {
+                vegBtn.classList.add('active');
+                nonVegBtn.classList.remove('active');
+                vegDiet.style.display = 'block';
+                nonVegDiet.style.display = 'none';
+            });
+
+            nonVegBtn.addEventListener('click', function() {
+                nonVegBtn.classList.add('active');
+                vegBtn.classList.remove('active');
+                nonVegDiet.style.display = 'block';
+                vegDiet.style.display = 'none';
+            });
+        }
+
+        // Moderate Risk diet type toggle
+        const vegBtnModerate = document.getElementById('veg-btn-moderate');
+        const nonVegBtnModerate = document.getElementById('non-veg-btn-moderate');
+        const vegDietModerate = document.getElementById('veg-diet-moderate');
+        const nonVegDietModerate = document.getElementById('non-veg-diet-moderate');
+
+        if (vegBtnModerate && nonVegBtnModerate && vegDietModerate && nonVegDietModerate) {
+            vegBtnModerate.addEventListener('click', function() {
+                vegBtnModerate.classList.add('active');
+                nonVegBtnModerate.classList.remove('active');
+                vegDietModerate.style.display = 'block';
+                nonVegDietModerate.style.display = 'none';
+            });
+
+            nonVegBtnModerate.addEventListener('click', function() {
+                nonVegBtnModerate.classList.add('active');
+                vegBtnModerate.classList.remove('active');
+                nonVegDietModerate.style.display = 'block';
+                vegDietModerate.style.display = 'none';
+            });
+        }
+
+        // Low Risk diet type toggle
+        const vegBtnLow = document.getElementById('veg-btn-low');
+        const nonVegBtnLow = document.getElementById('non-veg-btn-low');
+        const vegDietLow = document.getElementById('veg-diet-low');
+        const nonVegDietLow = document.getElementById('non-veg-diet-low');
+
+        if (vegBtnLow && nonVegBtnLow && vegDietLow && nonVegDietLow) {
+            vegBtnLow.addEventListener('click', function() {
+                vegBtnLow.classList.add('active');
+                nonVegBtnLow.classList.remove('active');
+                vegDietLow.style.display = 'block';
+                nonVegDietLow.style.display = 'none';
+            });
+
+            nonVegBtnLow.addEventListener('click', function() {
+                nonVegBtnLow.classList.add('active');
+                vegBtnLow.classList.remove('active');
+                nonVegDietLow.style.display = 'block';
+                vegDietLow.style.display = 'none';
+            });
+        }
+
+        // Day tabs functionality
+        const dayTabs = document.querySelectorAll('.day-tab');
+        const dayContents = document.querySelectorAll('.day-content');
+
+        dayTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const dayId = tab.getAttribute('data-day');
+                
+                // Remove active class from all tabs and contents
+                dayTabs.forEach(t => t.classList.remove('active'));
+                dayContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(dayId).classList.add('active');
+                
+                // For non-vegetarian diets, sync the tab selection
+                if (nonVegDiet && nonVegDiet.style.display === 'block') {
+                    const nonVegDayId = dayId + '-nonveg';
+                    if (document.getElementById(nonVegDayId)) {
+                        document.getElementById(nonVegDayId).classList.add('active');
+                    }
+                }
+                
+                // For moderate risk non-vegetarian diet
+                if (nonVegDietModerate && nonVegDietModerate.style.display === 'block') {
+                    const nonVegDayId = dayId + '-nonveg';
+                    if (document.getElementById(nonVegDayId)) {
+                        document.getElementById(nonVegDayId).classList.add('active');
+                    }
+                }
+                
+                // For low risk non-vegetarian diet
+                if (nonVegDietLow && nonVegDietLow.style.display === 'block') {
+                    const nonVegDayId = dayId + '-nonveg';
+                    if (document.getElementById(nonVegDayId)) {
+                        document.getElementById(nonVegDayId).classList.add('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
